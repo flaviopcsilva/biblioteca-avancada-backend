@@ -8,7 +8,7 @@ O projeto permite gerenciar usuários, autores, livros e empréstimos, incluindo
 
 - **API em produção:** https://biblioteca-avancada-backend.onrender.com
 - **Documentação interativa (Swagger):** https://biblioteca-avancada-backend.onrender.com/docs
-- **Repositório:** https://github.com/SEU_USUARIO/biblioteca-avancada-backend
+- **Repositório:** https://github.com/flaviopcsilva/biblioteca-avancada-backend
 
 > Substitua `SEU_USUARIO` pelo seu nome de usuário do GitHub para completar o link do repositório.
 
