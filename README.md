@@ -1,138 +1,196 @@
-# 📚 API Biblioteca Avançada
+# 📚 API Biblioteca — Backend
 
-API REST para gerenciamento de uma biblioteca, desenvolvida com Python, FastAPI e MySQL. O projeto implementa operações de cadastro, consulta, atualização e exclusão de autores, livros, usuários e empréstimos, além de autenticação com JWT e documentação interativa com Swagger.
+API REST para gerenciamento de uma biblioteca, desenvolvida com Python e FastAPI, utilizando MySQL para persistência de dados e JWT para autenticação.
 
-O projeto foi desenvolvido para praticar conceitos de desenvolvimento backend, APIs REST, validação de dados, segurança e integração com banco de dados relacional.
+O projeto permite gerenciar usuários, autores, livros e empréstimos, incluindo o controle de devoluções e a prevenção de empréstimos simultâneos do mesmo livro.
+
+## 🌐 Acesso à API
+
+- **API em produção:** https://biblioteca-avancada-backend.onrender.com
+- **Documentação interativa (Swagger):** https://biblioteca-avancada-backend.onrender.com/docs
+- **Repositório:** https://github.com/SEU_USUARIO/biblioteca-avancada-backend
+
+> Substitua `SEU_USUARIO` pelo seu nome de usuário do GitHub para completar o link do repositório.
 
 ## 🚀 Tecnologias utilizadas
 
 - **Python** — linguagem de programação.
-- **FastAPI** — framework para construção da API REST.
-- **MySQL 8.4** — banco de dados relacional.
+- **FastAPI** — desenvolvimento da API REST.
+- **Uvicorn** — servidor ASGI.
+- **MySQL** — banco de dados relacional.
 - **MySQL Connector/Python** — conexão com o banco de dados.
 - **Pydantic** — validação e estruturação dos dados.
-- **JWT** — autenticação baseada em tokens.
+- **PyJWT** — geração e validação de tokens JWT.
 - **Argon2** — hash seguro de senhas.
-- **python-dotenv** — gerenciamento de variáveis de ambiente.
-- **Swagger UI** — documentação e testes interativos.
+- **Python Dotenv** — gerenciamento de variáveis de ambiente.
+- **Swagger / OpenAPI** — documentação e testes interativos.
+- **Git e GitHub** — versionamento e hospedagem do código.
+- **Render** — publicação da API.
 - **Aiven** — hospedagem do banco de dados MySQL.
-- **Render** — plataforma planejada para hospedagem da API.
 
 ## ✨ Funcionalidades
 
-### Autenticação e usuários
+### 🔐 Autenticação
+
+- Login de usuários.
+- Autenticação baseada em JWT.
+- Hash de senhas utilizando Argon2.
+- Consulta dos dados do usuário autenticado.
+- Proteção de rotas que exigem autenticação.
+
+### 👥 Usuários
 
 - Cadastro de usuários.
-- Consulta, atualização e exclusão de usuários.
-- Armazenamento de senhas com hash Argon2.
-- Login com e-mail e senha.
-- Geração e validação de tokens JWT.
-- Consulta do usuário autenticado.
-- Proteção de operações de escrita por autenticação.
+- Listagem de usuários.
+- Consulta de usuário por identificador.
+- Atualização de usuários.
+- Exclusão de usuários.
+
+### ✍️ Autores
+
+- Cadastro de autores.
+- Listagem de autores.
+- Consulta de autor por identificador.
+- Atualização de autores.
+- Exclusão de autores.
+
+### 📖 Livros
+
+- Cadastro de livros.
+- Listagem de livros.
+- Consulta de livro por identificador.
+- Atualização de livros.
+- Exclusão de livros.
+
+### 🔄 Empréstimos
+
+- Cadastro de empréstimos.
+- Listagem de empréstimos.
+- Consulta de empréstimo por identificador.
+- Atualização de empréstimos.
+- Registro de devolução.
+- Consulta de empréstimos por usuário.
+- Consulta de empréstimos por livro.
+- Prevenção de empréstimos ativos duplicados para o mesmo livro, conforme as regras implementadas no banco de dados.
+
+## 📌 Endpoints principais
+
+### Autenticação
+
+| Método | Endpoint      | Descrição                      |
+| ------ | ------------- | ------------------------------ |
+| POST   | `/auth/login` | Realiza login                  |
+| GET    | `/auth/me`    | Consulta o usuário autenticado |
+
+### Usuários
+
+| Método | Endpoint                 | Descrição        |
+| ------ | ------------------------ | ---------------- |
+| POST   | `/usuarios`              | Cadastra usuário |
+| GET    | `/usuarios`              | Lista usuários   |
+| GET    | `/usuarios/{id_usuario}` | Consulta usuário |
+| PUT    | `/usuarios/{id_usuario}` | Atualiza usuário |
+| DELETE | `/usuarios/{id_usuario}` | Exclui usuário   |
 
 ### Autores
 
-- Cadastrar autores.
-- Listar autores.
-- Consultar autor por ID.
-- Atualizar autores.
-- Excluir autores.
+| Método | Endpoint              | Descrição      |
+| ------ | --------------------- | -------------- |
+| POST   | `/autores`            | Cadastra autor |
+| GET    | `/autores`            | Lista autores  |
+| GET    | `/autores/{id_autor}` | Consulta autor |
+| PUT    | `/autores/{id_autor}` | Atualiza autor |
+| DELETE | `/autores/{id_autor}` | Exclui autor   |
 
 ### Livros
 
-- Cadastrar livros vinculados a autores.
-- Listar livros com informações dos autores.
-- Consultar livro por ID.
-- Atualizar livros.
-- Excluir livros com tratamento de restrições de integridade.
+| Método | Endpoint             | Descrição      |
+| ------ | -------------------- | -------------- |
+| POST   | `/livros`            | Cadastra livro |
+| GET    | `/livros`            | Lista livros   |
+| GET    | `/livros/{id_livro}` | Consulta livro |
+| PUT    | `/livros/{id_livro}` | Atualiza livro |
+| DELETE | `/livros/{id_livro}` | Exclui livro   |
 
 ### Empréstimos
 
-- Cadastrar empréstimos com prazo padrão de 14 dias.
-- Listar todos os empréstimos.
-- Consultar empréstimo por ID.
-- Consultar empréstimos por usuário.
-- Consultar histórico de empréstimos por livro.
-- Atualizar dados de empréstimos ativos.
-- Registrar a data real da devolução.
-- Identificar empréstimos ativos, atrasados e devolvidos.
-- Impedir empréstimos ativos duplicados para o mesmo livro.
-- Excluir empréstimos devolvidos.
+| Método | Endpoint                                 | Descrição                        |
+| ------ | ---------------------------------------- | -------------------------------- |
+| POST   | `/emprestimos`                           | Cadastra empréstimo              |
+| GET    | `/emprestimos`                           | Lista empréstimos                |
+| GET    | `/emprestimos/{id_emprestimo}`           | Consulta empréstimo              |
+| PUT    | `/emprestimos/{id_emprestimo}`           | Atualiza empréstimo              |
+| PATCH  | `/emprestimos/{id_emprestimo}/devolucao` | Registra devolução               |
+| DELETE | `/emprestimos/{id_emprestimo}`           | Exclui empréstimo                |
+| GET    | `/emprestimos/usuario/{id_usuario}`      | Consulta empréstimos por usuário |
+| GET    | `/emprestimos/livro/{id_livro}`          | Consulta empréstimos por livro   |
 
-## 🛠️ Pré-requisitos
+> Os requisitos de autenticação e os formatos dos dados de cada endpoint podem ser consultados diretamente na documentação Swagger.
 
-Antes de executar o projeto, instale:
-
-- Python compatível com as dependências utilizadas.
-- Git.
-- Visual Studio Code ou outra IDE de sua preferência.
-- Uma instância MySQL acessível.
-- Beekeeper Studio ou outro cliente SQL para administrar o banco, se necessário.
-
-## 📁 Estrutura do projeto
+## 🗂️ Estrutura do projeto
 
 ```text
 biblioteca-avancada-backend/
 ├── conexoes/
 │   └── mysql.py
 ├── schemas/
-│   ├── erros.py
-│   ├── usuarios.py
-│   ├── login.py
-│   └── emprestimos.py
+│   └── ...
 ├── seguranca/
-│   ├── senhas.py
-│   └── tokens.py
-├── .env
+│   └── ...
+├── .env                  # Configurações locais e segredos
 ├── .gitignore
-├── main.py
-├── schema.sql
-├── teste_conexao.py
-└── requirements.txt
+├── main.py               # Aplicação e endpoints FastAPI
+├── requirements.txt      # Dependências Python
+├── schema.sql            # Estrutura do banco de dados
+└── teste_conexao.py      # Teste de conexão com MySQL
 ```
 
-A estrutura acima representa os principais arquivos conhecidos do projeto. Outros módulos e schemas podem ser adicionados conforme a evolução da aplicação.
+A estrutura acima é ilustrativa. Os nomes e arquivos internos das pastas `schemas/` e `seguranca/` podem variar conforme a organização atual do projeto.
 
-## ⚙️ Instalação
+O ambiente virtual `.venv/` é criado localmente e não deve ser enviado ao GitHub.
 
-### 1. Clonar o repositório
+## ⚙️ Como executar localmente
 
-Depois de publicar o projeto no GitHub, execute:
+### 1. Pré-requisitos
+
+- Python 3.13 ou outra versão compatível com as dependências do projeto.
+- MySQL local ou remoto.
+- Git.
+- Visual Studio Code ou outra IDE de sua preferência.
+
+### 2. Clonar o repositório
 
 ```bash
-git clone URL_DO_SEU_REPOSITORIO
+git clone https://github.com/SEU_USUARIO/biblioteca-avancada-backend.git
 cd biblioteca-avancada-backend
 ```
 
-Substitua `URL_DO_SEU_REPOSITORIO` pelo endereço real do repositório.
+Substitua `SEU_USUARIO` pelo seu usuário do GitHub.
 
-### 2. Criar o ambiente virtual
+### 3. Criar o ambiente virtual
 
 No Windows, usando PowerShell:
 
 ```powershell
-python -m venv .venv
+py -3.13 -m venv .venv
 ```
 
-Ative o ambiente:
+Ative o ambiente virtual:
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
 ```
 
-Se o PowerShell bloquear a ativação, consulte as políticas de execução do seu ambiente ou utilize o terminal CMD.
-
-### 3. Instalar as dependências
+### 4. Instalar as dependências
 
 ```powershell
+python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-O arquivo `requirements.txt` deve conter as dependências necessárias para executar a aplicação.
+### 5. Configurar as variáveis de ambiente
 
-### 4. Configurar as variáveis de ambiente
-
-Crie um arquivo `.env` na raiz do projeto:
+Crie um arquivo `.env` na raiz do projeto, utilizando o seguinte modelo:
 
 ```env
 DB_HOST=seu_host_mysql
@@ -140,125 +198,116 @@ DB_PORT=3306
 DB_NAME=biblioteca
 DB_USER=seu_usuario
 DB_PASSWORD=sua_senha
-
 JWT_SECRET=sua_chave_secreta
 JWT_ALGORITHM=HS256
 ```
 
-Substitua os valores de exemplo pelas configurações do seu banco de dados e gere uma chave JWT forte e aleatória.
+Preencha as variáveis com os dados reais do seu ambiente.
 
-**Segurança:** nunca publique o arquivo `.env`, senhas, tokens ou chaves privadas no GitHub.
+**Importante:** não compartilhe o arquivo `.env` nem envie credenciais para o GitHub.
 
-### 5. Preparar o banco de dados
+Para gerar uma chave secreta JWT forte, você pode utilizar:
 
-Crie o banco `biblioteca` e configure as tabelas necessárias utilizando o arquivo `schema.sql` e os comandos SQL definidos durante o desenvolvimento.
+```powershell
+python -c "import secrets; print(secrets.token_urlsafe(48))"
+```
 
-O banco precisa conter as tabelas de autores, livros, usuários e empréstimos, além das chaves estrangeiras e da restrição de empréstimos ativos duplicados.
+Guarde o resultado em `JWT_SECRET`, tanto no ambiente local quanto nas variáveis de ambiente do serviço de produção, conforme necessário.
 
-Se estiver utilizando a instância Aiven já configurada, confira os parâmetros de conexão e os requisitos de SSL fornecidos pelo serviço.
+### 6. Configurar o banco de dados
 
-### 6. Executar a API
+Crie o banco de dados MySQL e aplique o esquema definido em `schema.sql`, caso ele represente a estrutura atual da aplicação.
 
-Com o ambiente virtual ativado, execute:
+Confira também se o usuário do banco tem as permissões necessárias e se o servidor permite a conexão a partir do ambiente em que a API será executada.
+
+Se o banco já estiver criado e configurado, não execute novamente scripts que possam apagar ou recriar dados sem antes conferir seu conteúdo.
+
+### 7. Testar a conexão com o MySQL
+
+Se o arquivo `teste_conexao.py` estiver disponível:
+
+```powershell
+python teste_conexao.py
+```
+
+### 8. Executar a API
 
 ```powershell
 python -m uvicorn main:app --reload
 ```
 
-A aplicação estará disponível localmente em:
+A API ficará disponível localmente em:
 
-- API: http://127.0.0.1:8000
-- Swagger UI: http://127.0.0.1:8000/docs
-- OpenAPI JSON: http://127.0.0.1:8000/openapi.json
+- **Aplicação:** http://127.0.0.1:8000
+- **Swagger:** http://127.0.0.1:8000/docs
+- **OpenAPI JSON:** http://127.0.0.1:8000/openapi.json
 
-## 🔐 Autenticação JWT
+## 🔑 Autenticação com JWT
 
-Para acessar as operações protegidas:
+Para utilizar endpoints protegidos:
 
-1. Execute `POST /auth/login`.
-2. Informe o e-mail e a senha de um usuário cadastrado.
-3. Copie o valor de `access_token` retornado.
-4. Clique em **Authorize** no Swagger.
-5. Informe o token e confirme a autorização.
-6. Execute as operações protegidas.
+1. Acesse a documentação Swagger.
+2. Localize o endpoint de login.
+3. Envie as credenciais de um usuário válido no formato solicitado pela API.
+4. Copie o token JWT retornado.
+5. Utilize o botão **Authorize** do Swagger, se disponível, para autorizar as chamadas.
+6. Execute os endpoints protegidos.
 
-Os tokens possuem validade limitada. Após a expiração, será necessário autenticar novamente.
+As credenciais e o token devem ser mantidos em segurança. Não os publique em exemplos, capturas de tela ou repositórios.
 
-## 📡 Principais endpoints
+## ☁️ Deploy
 
-Os endpoints abaixo representam as rotas implementadas no projeto.
+A aplicação está publicada no Render e utiliza um banco de dados MySQL hospedado no Aiven.
 
-| Método | Endpoint                                 | Descrição                         |
-| ------ | ---------------------------------------- | --------------------------------- |
-| POST   | `/auth/login`                            | Autenticar usuário                |
-| GET    | `/auth/me`                               | Consultar usuário autenticado     |
-| POST   | `/usuarios`                              | Cadastrar usuário                 |
-| GET    | `/usuarios`                              | Listar usuários                   |
-| GET    | `/usuarios/{id_usuario}`                 | Consultar usuário                 |
-| PUT    | `/usuarios/{id_usuario}`                 | Atualizar usuário                 |
-| DELETE | `/usuarios/{id_usuario}`                 | Excluir usuário                   |
-| POST   | `/autores`                               | Cadastrar autor                   |
-| GET    | `/autores`                               | Listar autores                    |
-| GET    | `/autores/{id_autor}`                    | Consultar autor                   |
-| PUT    | `/autores/{id_autor}`                    | Atualizar autor                   |
-| DELETE | `/autores/{id_autor}`                    | Excluir autor                     |
-| POST   | `/livros`                                | Cadastrar livro                   |
-| GET    | `/livros`                                | Listar livros                     |
-| GET    | `/livros/{id_livro}`                     | Consultar livro                   |
-| PUT    | `/livros/{id_livro}`                     | Atualizar livro                   |
-| DELETE | `/livros/{id_livro}`                     | Excluir livro                     |
-| POST   | `/emprestimos`                           | Cadastrar empréstimo              |
-| GET    | `/emprestimos`                           | Listar empréstimos                |
-| GET    | `/emprestimos/{id_emprestimo}`           | Consultar empréstimo              |
-| GET    | `/emprestimos/usuario/{id_usuario}`      | Consultar empréstimos por usuário |
-| GET    | `/emprestimos/livro/{id_livro}`          | Consultar histórico por livro     |
-| PUT    | `/emprestimos/{id_emprestimo}`           | Atualizar empréstimo              |
-| PATCH  | `/emprestimos/{id_emprestimo}/devolucao` | Registrar devolução               |
-| DELETE | `/emprestimos/{id_emprestimo}`           | Excluir empréstimo                |
+**Configuração de referência para o Render:**
 
-As operações de escrita protegidas exigem autenticação JWT. Consulte o Swagger para conferir os parâmetros, os schemas e as respostas de cada rota.
+- **Runtime:** Python.
+- **Build Command:** `pip install -r requirements.txt`
+- **Start Command:** `uvicorn main:app --host 0.0.0.0 --port $PORT`
+
+Configure no painel do Render as variáveis de ambiente necessárias, como `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET` e `JWT_ALGORITHM`.
+
+As credenciais devem ser configuradas diretamente no ambiente de produção, nunca no código-fonte.
+
+## 🛡️ Boas práticas de segurança
+
+- Armazenamento de senhas por hash com Argon2.
+- Autenticação baseada em JWT.
+- Configuração por variáveis de ambiente.
+- Exclusão de segredos e arquivos locais do controle de versão.
+- Validação dos dados recebidos pela API.
+- Proteção das rotas que exigem autenticação.
+
+A segurança efetiva depende também das configurações de autorização, das permissões do banco de dados, da gestão dos tokens e da validação de cada endpoint.
 
 ## 🧪 Testes
 
-A API pode ser testada pelo Swagger UI:
+A API pode ser explorada por meio do Swagger:
 
-```text
-http://127.0.0.1:8000/docs
-```
+https://biblioteca-avancada-backend.onrender.com/docs
 
-Os testes realizados durante o desenvolvimento incluíram:
+Os testes automatizados com `pytest` podem ser adicionados para validar os endpoints, a autenticação, as regras de empréstimos e o tratamento de erros.
 
-- Cadastro e consulta de autores.
-- Cadastro e consulta de livros.
-- Cadastro e gerenciamento de usuários.
-- Autenticação e validação de JWT.
-- Cadastro e consulta de empréstimos.
-- Registro de devolução.
-- Consultas por ID de usuário e de livro.
-- Tratamento de registros inexistentes.
-- Validação de datas.
-- Proteção contra empréstimos ativos duplicados.
+## 📈 Melhorias futuras
 
-## ☁️ Publicação
-
-A publicação está planejada para o GitHub e o Render.
-
-Antes de disponibilizar a API publicamente, é necessário:
-
-1. Enviar o código ao GitHub sem arquivos secretos.
-2. Configurar as variáveis de ambiente no Render.
-3. Configurar o comando de instalação e o comando de inicialização da aplicação.
-4. Verificar a conectividade do Render com o MySQL hospedado na Aiven.
-5. Testar a API publicada e sua documentação Swagger.
-
-A publicação da aplicação não migra o banco de dados automaticamente.
-
-## 🔒 Segurança
-
-O projeto utiliza hash Argon2 para senhas, autenticação JWT e consultas SQL parametrizadas.
-
-Antes de utilizar a aplicação em produção, recomenda-se revisar o tratamento de erros, a autorização por usuário, a configuração de SSL, a gestão de segredos e as regras de integridade do banco.
+- Implementação de testes automatizados.
+- Paginação e filtros nas listagens.
+- Melhorias no tratamento e registro de erros.
+- Pipeline de integração contínua.
+- Interface frontend para gerenciamento da biblioteca.
+- Monitoramento e observabilidade da aplicação.
 
 ## 👨‍💻 Autor
 
-Desenvolvido como projeto de estudo e portfólio na área de desenvolvimento backend com Python, APIs REST, FastAPI e bancos de dados relacionais.
+**Flávio Peres**
+
+Desenvolvedor com foco em desenvolvimento backend, APIs REST e integração com bancos de dados relacionais.
+
+**Tecnologias de interesse:** Python, FastAPI, Node.js, TypeScript, Angular, React, MySQL e PostgreSQL.
+
+- **GitHub:** https://github.com/flaviopcsilva
+- **LinkedIn:** https://www.linkedin.com/in/fl%C3%A1vio-cardoso-093391139
+
+---
+
+Desenvolvido como projeto de portfólio para praticar desenvolvimento de APIs REST, autenticação, persistência de dados, documentação e deploy em nuvem.
